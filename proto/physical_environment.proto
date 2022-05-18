@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+
+package pb;
+
+service PhysicalEnvironment {
+    rpc Create(PhysicalEnvironmentRequest) returns (PhysicalEnvironmentResponse) {}
+    rpc Update(PhysicalEnvironmentRequest) returns (PhysicalEnvironmentResponse) {}
+    rpc Get(PhysicalEnvironmentGetRequest) returns (PhysicalEnvironmentResponse) {}
+    rpc List(PhysicalEnvironmentRequestEmpty) returns (PhysicalEnvironmentResponseList) {}
+
+}
+
+message PhysicalEnvironmentRequestEmpty {}
+message PhysicalEnvironmentGetRequest {
+    int64 ID = 1;
+}
+
+message PhysicalEnvironmentRequest {
+    int64 ID = 1;
+    string Name = 2;
+    bool Active = 3;
+    int64 UserID = 4;
+     
+ }
+ 
+ message PhysicalEnvironmentResponse {
+    int64 ID = 1;
+    string Name = 2;
+    bool Active = 3;
+    int64 UserID = 4;
+      
+  }
+
+message PhysicalEnvironmentResponseList {
+    repeated PhysicalEnvironmentResponse PhysicalEnvironment = 1;
+}
+
