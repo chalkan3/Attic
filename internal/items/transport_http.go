@@ -1,4 +1,4 @@
-package groups
+package items
 
 import (
 	"context"
@@ -74,7 +74,7 @@ func decodeUpdate(ctx context.Context, r *http.Request) (interface{}, error) {
 	if err != nil {
 		return request, err
 	}
-	request.Group.SetID(id)
+	request.Item.SetID(id)
 
 	return request, nil
 }
@@ -87,7 +87,7 @@ func decodeGet(ctx context.Context, r *http.Request) (interface{}, error) {
 	}
 
 	return GetRequest{
-		Group: &Group{ID: id},
+		Item: &Item{ID: id},
 	}, nil
 }
 
@@ -114,7 +114,7 @@ func encodeResponse(ctx context.Context, w http.ResponseWriter, response interfa
 
 func codeFrom(err error) int {
 	switch err {
-	case ErrUserIDNotExist:
+	case ErrUserIDNotExist, ErrUserDontMatch, ErrPeIDNotExist:
 		return http.StatusBadRequest
 	default:
 		return http.StatusInternalServerError

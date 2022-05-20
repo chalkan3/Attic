@@ -1,4 +1,4 @@
-package groups
+package items
 
 import (
 	"time"
@@ -16,7 +16,7 @@ func NewInstrumentingMiddleware(metrics *Metrics, next Service) *instrumentingMi
 	}
 }
 
-func (mw instrumentingMiddleware) Create(group *Group) (*Group, error) {
+func (mw instrumentingMiddleware) Create(item *Item) (*Item, error) {
 	defer func(begin time.Time) {
 		lvsRequests := []string{"method", "create", "type", "requestsCount"}
 		lvsLatency := []string{"method", "create", "type", "requestsLatency"}
@@ -24,10 +24,10 @@ func (mw instrumentingMiddleware) Create(group *Group) (*Group, error) {
 		mw.metrics.requestCounter.With(lvsRequests...).Add(1)
 
 	}(time.Now())
-	return mw.next.Create(group)
+	return mw.next.Create(item)
 }
 
-func (mw instrumentingMiddleware) Update(group *Group) (*Group, error) {
+func (mw instrumentingMiddleware) Update(item *Item) (*Item, error) {
 	defer func(begin time.Time) {
 		lvsRequests := []string{"method", "update", "type", "requestsCount"}
 		lvsLatency := []string{"method", "update", "type", "requestsLatency"}
@@ -35,10 +35,10 @@ func (mw instrumentingMiddleware) Update(group *Group) (*Group, error) {
 		mw.metrics.requestCounter.With(lvsRequests...).Add(1)
 
 	}(time.Now())
-	return mw.next.Update(group)
+	return mw.next.Update(item)
 }
 
-func (mw instrumentingMiddleware) Get(group *Group) (*Group, error) {
+func (mw instrumentingMiddleware) Get(item *Item) (*Item, error) {
 	defer func(begin time.Time) {
 		lvsRequests := []string{"method", "get", "type", "requestsCount"}
 		lvsLatency := []string{"method", "get", "type", "requestsLatency"}
@@ -46,10 +46,10 @@ func (mw instrumentingMiddleware) Get(group *Group) (*Group, error) {
 		mw.metrics.requestCounter.With(lvsRequests...).Add(1)
 
 	}(time.Now())
-	return mw.next.Get(group)
+	return mw.next.Get(item)
 }
 
-func (mw instrumentingMiddleware) List() ([]Group, error) {
+func (mw instrumentingMiddleware) List() ([]Item, error) {
 	defer func(begin time.Time) {
 		lvsRequests := []string{"method", "List", "type", "requestsCount"}
 		lvsLatency := []string{"method", "List", "type", "requestsLatency"}

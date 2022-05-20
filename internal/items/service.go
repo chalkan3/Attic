@@ -1,4 +1,4 @@
-package groups
+package items
 
 import (
 	"context"
@@ -8,10 +8,10 @@ import (
 )
 
 type Service interface {
-	Create(group *Group) (*Group, error)
-	Update(group *Group) (*Group, error)
-	Get(group *Group) (*Group, error)
-	List() ([]Group, error)
+	Create(item *Item) (*Item, error)
+	Update(item *Item) (*Item, error)
+	Get(item *Item) (*Item, error)
+	List() ([]Item, error)
 }
 
 type service struct {
@@ -28,16 +28,16 @@ func NewService(repository Repository, grpc *grpc_clients.ClientGRPC) Service {
 	}
 }
 
-func (s *service) Create(group *Group) (*Group, error) {
+func (s *service) Create(item *Item) (*Item, error) {
 	users, err := s.userGRPC.Get(context.Background(), &pb.UserGetRequest{
-		ID: int64(group.GetUserID()),
+		ID: int64(item.GetUserID()),
 	})
 	if err != nil {
 		return nil, err
 	}
 
 	pe, err := s.physicalEnvironmentGRPC.Get(context.Background(), &pb.PhysicalEnvironmentGetRequest{
-		ID: int64(group.PhysicalEnvironmentID),
+		ID: int64(item.PhysicalEnvironmentID),
 	})
 	if err != nil {
 		return nil, ErrUserIDNotExist
@@ -58,17 +58,17 @@ func (s *service) Create(group *Group) (*Group, error) {
 		return nil, ErrUserDontMatch
 	}
 
-	return s.repository.Insert(group)
+	return s.repository.Insert(item)
 }
 
-func (s *service) Update(group *Group) (*Group, error) {
-	return s.repository.Update(group)
+func (s *service) Update(item *Item) (*Item, error) {
+	return s.repository.Update(item)
 }
 
-func (s *service) Get(group *Group) (*Group, error) {
-	return s.repository.Get(group)
+func (s *service) Get(item *Item) (*Item, error) {
+	return s.repository.Get(item)
 }
 
-func (s *service) List() ([]Group, error) {
+func (s *service) List() ([]Item, error) {
 	return s.repository.List()
 }

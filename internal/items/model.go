@@ -1,62 +1,64 @@
-package groups
+package items
 
 import (
 	"time"
 )
 
-type Group struct {
-	ID                    int    `gorm:"primaryKey" json:"id,omitempty"`
-	Name                  string `json:"name,omitempty"`
-	Active                bool   `json:"active,omitempty"`
-	UserID                int    `json:"user_id,omitempty"`
-	PhysicalEnvironmentID int
+type Item struct {
+	ID                    int       `gorm:"primaryKey" json:"id,omitempty"`
+	Name                  string    `json:"name,omitempty"`
+	Active                bool      `json:"active,omitempty"`
+	Quantity              int64     `json:"quantity,omitempty"`
+	GroupID               int       `json:"group_id,omitempty"`
+	UserID                int       `json:"user_id,omitempty"`
+	PhysicalEnvironmentID int       `json:"physical_environment_id,omitempty"`
 	CreatedAT             time.Time `json:"created_at,omitempty"`
 	UpdatedAT             time.Time `json:"updated_at,omitempty"`
 }
 
-func NewGroup() *Group {
-	return new(Group)
+func NewItem() *Item {
+	return new(Item)
 }
 
-func (pe *Group) SetID(id int) *Group {
+func (pe *Item) SetID(id int) *Item {
 	pe.ID = id
 	return pe
 }
 
-func (pe *Group) SetUserID(id int) *Group {
+func (pe *Item) SetUserID(id int) *Item {
 	pe.UserID = id
 	return pe
 }
 
-func (pe *Group) SetPhysicalEnvironmentID(id int) *Group {
+func (pe *Item) SetPhysicalEnvironmentID(id int) *Item {
 	pe.PhysicalEnvironmentID = id
 	return pe
 }
 
-func (pe *Group) SetName(name string) *Group {
+func (pe *Item) SetName(name string) *Item {
 	pe.Name = name
 	return pe
 }
 
-func (pe *Group) SetActive(active bool) *Group {
+func (pe *Item) SetActive(active bool) *Item {
 	pe.Active = active
 	return pe
 }
 
-func (pe *Group) SetCreatedAT(createdAT time.Time) *Group {
+func (pe *Item) SetCreatedAT(createdAT time.Time) *Item {
 	pe.CreatedAT = createdAT
 	return pe
 }
 
-func (pe *Group) SetUpdateAT(updateAT time.Time) *Group {
+func (pe *Item) SetUpdateAT(updateAT time.Time) *Item {
 	pe.UpdatedAT = updateAT
 	return pe
 }
-func (pe *Group) GetID() int                    { return pe.ID }
-func (pe *Group) GetUserID() int                { return pe.UserID }
-func (pe *Group) GetPhysicalEnvironmentID() int { return pe.PhysicalEnvironmentID }
+func (pe *Item) GetID() int                    { return pe.ID }
+func (pe *Item) GetUserID() int                { return pe.UserID }
+func (pe *Item) GetPhysicalEnvironmentID() int { return pe.PhysicalEnvironmentID }
 
-func (pe *Group) GetName() string         { return pe.Name }
-func (pe *Group) GetActive() bool         { return pe.Active }
-func (pe *Group) GetCreatedAT() time.Time { return pe.CreatedAT }
-func (pe *Group) GetUpdatedAT() time.Time { return pe.UpdatedAT }
+func (pe *Item) GetName() string         { return pe.Name }
+func (pe *Item) GetActive() bool         { return pe.Active }
+func (pe *Item) GetCreatedAT() time.Time { return pe.CreatedAT }
+func (pe *Item) GetUpdatedAT() time.Time { return pe.UpdatedAT }

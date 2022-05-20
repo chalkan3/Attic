@@ -1,4 +1,4 @@
-package groups
+package items
 
 import (
 	"time"
@@ -15,7 +15,7 @@ func NewLogMW(logger log.Logger, next Service) logmw {
 	return logmw{logger, next}
 }
 
-func (mw logmw) Create(group *Group) (*Group, error) {
+func (mw logmw) Create(item *Item) (*Item, error) {
 	defer func(begin time.Time) {
 		_ = mw.logger.Log(
 			"method", "Create",
@@ -23,10 +23,10 @@ func (mw logmw) Create(group *Group) (*Group, error) {
 			"took", time.Since(begin),
 		)
 	}(time.Now())
-	return mw.svc.Create(group)
+	return mw.svc.Create(item)
 }
 
-func (mw logmw) Update(group *Group) (*Group, error) {
+func (mw logmw) Update(item *Item) (*Item, error) {
 	defer func(begin time.Time) {
 		_ = mw.logger.Log(
 			"method", "Update",
@@ -34,10 +34,10 @@ func (mw logmw) Update(group *Group) (*Group, error) {
 			"took", time.Since(begin),
 		)
 	}(time.Now())
-	return mw.svc.Update(group)
+	return mw.svc.Update(item)
 }
 
-func (mw logmw) Get(group *Group) (*Group, error) {
+func (mw logmw) Get(item *Item) (*Item, error) {
 	defer func(begin time.Time) {
 		_ = mw.logger.Log(
 			"method", "Get",
@@ -45,10 +45,10 @@ func (mw logmw) Get(group *Group) (*Group, error) {
 			"took", time.Since(begin),
 		)
 	}(time.Now())
-	return mw.svc.Get(group)
+	return mw.svc.Get(item)
 }
 
-func (mw logmw) List() ([]Group, error) {
+func (mw logmw) List() ([]Item, error) {
 	defer func(begin time.Time) {
 		_ = mw.logger.Log(
 			"method", "List",

@@ -1,4 +1,4 @@
-package groups
+package items
 
 import (
 	"context"
@@ -16,10 +16,10 @@ type gRPCServer struct {
 	get    gt.Handler
 	list   gt.Handler
 
-	pb.UnimplementedGroupServer
+	pb.UnimplementedItemServer
 }
 
-func NewGRPCServer(svc Service, logger log.Logger) pb.GroupServer {
+func NewGRPCServer(svc Service, logger log.Logger) pb.ItemServer {
 	opt := optionsGRPCServer(logger)
 	return &gRPCServer{
 		create: gt.NewServer(
@@ -53,44 +53,44 @@ func NewGRPCServer(svc Service, logger log.Logger) pb.GroupServer {
 
 }
 
-func (s *gRPCServer) Create(ctx context.Context, req *pb.GroupCreateRequest) (*pb.GroupResponse, error) {
+func (s *gRPCServer) Create(ctx context.Context, req *pb.ItemCreateRequest) (*pb.ItemResponse, error) {
 	_, resp, err := s.create.ServeGRPC(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*pb.GroupResponse), nil
+	return resp.(*pb.ItemResponse), nil
 }
 
-func (s *gRPCServer) Update(ctx context.Context, req *pb.GroupUpdateRequest) (*pb.GroupResponse, error) {
+func (s *gRPCServer) Update(ctx context.Context, req *pb.ItemUpdateRequest) (*pb.ItemResponse, error) {
 	_, resp, err := s.update.ServeGRPC(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*pb.GroupResponse), nil
+	return resp.(*pb.ItemResponse), nil
 }
 
-func (s *gRPCServer) Get(ctx context.Context, req *pb.GroupGetRequest) (*pb.GroupResponse, error) {
+func (s *gRPCServer) Get(ctx context.Context, req *pb.ItemGetRequest) (*pb.ItemResponse, error) {
 	_, resp, err := s.get.ServeGRPC(ctx, req)
 	if err != nil {
 		return nil, err
 	}
 
-	return resp.(*pb.GroupResponse), nil
+	return resp.(*pb.ItemResponse), nil
 }
 
-func (s *gRPCServer) List(ctx context.Context, req *pb.GroupListRequest) (*pb.GroupListResponse, error) {
+func (s *gRPCServer) List(ctx context.Context, req *pb.ItemListRequest) (*pb.ItemListResponse, error) {
 	_, resp, err := s.list.ServeGRPC(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*pb.GroupListResponse), nil
+	return resp.(*pb.ItemListResponse), nil
 }
 
 // CREATE
 func decodeCreateGRPCRequest(_ context.Context, request interface{}) (interface{}, error) {
-	req := request.(*pb.GroupCreateRequest)
+	req := request.(*pb.ItemCreateRequest)
 	return CreateRequest{
-		Group: NewGroup().
+		Item: NewItem().
 			SetActive(req.GetActive()).
 			SetName(req.GetName()).
 			SetUserID(int(req.GetUserID())).
@@ -101,19 +101,19 @@ func decodeCreateGRPCRequest(_ context.Context, request interface{}) (interface{
 
 func encodeCreateGRPCResponse(_ context.Context, response interface{}) (interface{}, error) {
 	resp := response.(CreateResponse)
-	return &pb.GroupResponse{
-		ID:     int32(resp.Group.GetID()),
-		Name:   resp.Group.GetName(),
-		Active: resp.Group.GetActive(),
-		UserID: int32(resp.Group.GetUserID()),
+	return &pb.ItemResponse{
+		ID:     int32(resp.Item.GetID()),
+		Name:   resp.Item.GetName(),
+		Active: resp.Item.GetActive(),
+		UserID: int32(resp.Item.GetUserID()),
 	}, nil
 }
 
 // UPDATE
 func decodeUpdateGRPCRequest(_ context.Context, request interface{}) (interface{}, error) {
-	req := request.(*pb.GroupUpdateRequest)
+	req := request.(*pb.ItemUpdateRequest)
 	return UpdateRequest{
-		Group: NewGroup().
+		Item: NewItem().
 			SetActive(req.GetActive()).
 			SetName(req.GetName()).
 			SetUserID(int(req.GetUserID())).
@@ -123,21 +123,21 @@ func decodeUpdateGRPCRequest(_ context.Context, request interface{}) (interface{
 }
 func encodeUpdateGRPCResponse(_ context.Context, response interface{}) (interface{}, error) {
 	resp := response.(UpdateResponse)
-	return &pb.GroupResponse{
-		ID:                    int32(resp.Group.GetID()),
-		Name:                  resp.Group.GetName(),
-		Active:                resp.Group.GetActive(),
-		UserID:                int32(resp.Group.GetID()),
-		PhysicalEnvironmentID: int32(resp.Group.GetPhysicalEnvironmentID()),
+	return &pb.ItemResponse{
+		ID:                    int32(resp.Item.GetID()),
+		Name:                  resp.Item.GetName(),
+		Active:                resp.Item.GetActive(),
+		UserID:                int32(resp.Item.GetID()),
+		PhysicalEnvironmentID: int32(resp.Item.GetPhysicalEnvironmentID()),
 	}, nil
 }
 
 // GET
 
 func decodeGetGRPCRequest(_ context.Context, request interface{}) (interface{}, error) {
-	req := request.(*pb.GroupGetRequest)
+	req := request.(*pb.ItemGetRequest)
 	return GetRequest{
-		Group: NewGroup().
+		Item: NewItem().
 			SetID(int(req.GetID())),
 	}, nil
 
@@ -145,12 +145,12 @@ func decodeGetGRPCRequest(_ context.Context, request interface{}) (interface{}, 
 
 func encodeGetGRPCResponse(_ context.Context, response interface{}) (interface{}, error) {
 	resp := response.(GetResponse)
-	return &pb.GroupResponse{
-		ID:                    int32(resp.Group.GetID()),
-		Name:                  resp.Group.GetName(),
-		Active:                resp.Group.GetActive(),
-		UserID:                int32(resp.Group.GetUserID()),
-		PhysicalEnvironmentID: int32(resp.Group.GetPhysicalEnvironmentID()),
+	return &pb.ItemResponse{
+		ID:                    int32(resp.Item.GetID()),
+		Name:                  resp.Item.GetName(),
+		Active:                resp.Item.GetActive(),
+		UserID:                int32(resp.Item.GetUserID()),
+		PhysicalEnvironmentID: int32(resp.Item.GetPhysicalEnvironmentID()),
 	}, nil
 }
 
@@ -162,10 +162,10 @@ func decodListGRPCRequest(_ context.Context, request interface{}) (interface{}, 
 }
 func encodListGRPCResponse(_ context.Context, response interface{}) (interface{}, error) {
 	resp := response.(ListResponse)
-	var listResponse []*pb.GroupResponse
+	var listResponse []*pb.ItemResponse
 
-	for _, group := range resp.Group {
-		listResponse = append(listResponse, &pb.GroupResponse{
+	for _, group := range resp.Item {
+		listResponse = append(listResponse, &pb.ItemResponse{
 			ID:     int32(group.GetID()),
 			Name:   group.GetName(),
 			Active: group.GetActive(),
@@ -173,8 +173,8 @@ func encodListGRPCResponse(_ context.Context, response interface{}) (interface{}
 		})
 	}
 
-	return &pb.GroupListResponse{
-		GroupResponse: listResponse,
+	return &pb.ItemListResponse{
+		ItemResponse: listResponse,
 	}, nil
 }
 

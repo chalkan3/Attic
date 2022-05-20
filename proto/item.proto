@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+package pb;
+
+service Item {
+    rpc Create(ItemCreateRequest) returns (ItemResponse){}
+    rpc Update(ItemUpdateRequest) returns (ItemResponse){}
+    rpc Get(ItemGetRequest) returns (ItemResponse) {}
+    rpc List(ItemListRequest) returns (ItemListResponse) {}
+}
+
+
+
+message ItemCreateRequest {
+    string Name = 2;
+    int32 UserID = 3;
+    bool Active = 4;
+    int32 PhysicalEnvironmentID = 5;
+    int32 GroupID = 6;
+    int64 Quantity = 7;
+}
+
+message ItemUpdateRequest {
+    int32 ID = 1;
+    string Name = 2;
+    int32 UserID = 3;
+    bool Active = 4;
+    int32 PhysicalEnvironmentID = 5;
+}
+
+
+message ItemGetRequest {
+    int32 ID = 1;
+}
+
+
+message ItemListRequest {
+
+}
+
+message ItemResponse {
+    int32 ID = 1;
+    string Name = 2;
+    int32 UserID = 3;
+    bool Active = 4;
+    int32 PhysicalEnvironmentID = 5;
+    int32 GroupID = 6;
+    int64 Quantity = 7;
+
+}
+message ItemListResponse {
+    repeated ItemResponse ItemResponse = 1;
+}

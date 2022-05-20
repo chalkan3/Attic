@@ -1,4 +1,4 @@
-package groups
+package items
 
 import (
 	postgresGORM "rodrigues.igor.com/attic/internal/database"
@@ -15,7 +15,7 @@ func NewMigrations(gorm *postgresGORM.PostgresGORM) *Migrations {
 }
 
 func (m *Migrations) Migrate() {
-	if ok := m.gorm.GetGORM().Migrator().HasTable(Group{}); !ok {
-		m.gorm.GetGORM().Migrator().CreateTable(Group{})
+	if ok := m.gorm.GetGORM().Migrator().HasTable(Item{}); !ok {
+		m.gorm.GetGORM().Migrator().CreateTable(Item{})
 	}
 }

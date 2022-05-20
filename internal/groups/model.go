@@ -5,11 +5,11 @@ import (
 )
 
 type Group struct {
-	ID                    int    `gorm:"primaryKey" json:"id,omitempty"`
-	Name                  string `json:"name,omitempty"`
-	Active                bool   `json:"active,omitempty"`
-	UserID                int    `json:"user_id,omitempty"`
-	PhysicalEnvironmentID int
+	ID                    int       `gorm:"primaryKey" json:"id,omitempty"`
+	Name                  string    `json:"name,omitempty"`
+	Active                bool      `json:"active,omitempty"`
+	UserID                int       `json:"user_id,omitempty"`
+	PhysicalEnvironmentID int       `json:"physical_environment_id,omitempty"`
 	CreatedAT             time.Time `json:"created_at,omitempty"`
 	UpdatedAT             time.Time `json:"updated_at,omitempty"`
 }

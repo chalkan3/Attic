@@ -1,4 +1,4 @@
-package groups
+package items
 
 import (
 	"context"
@@ -7,82 +7,82 @@ import (
 )
 
 type CreateRequest struct {
-	Group *Group `json:"group,omitempty"`
+	Item *Item `json:"item,omitempty"`
 }
 type CreateResponse struct {
-	Group *Group `json:"group,omitempty"`
+	Item *Item `json:"item,omitempty"`
 }
 
 func CreateEndpoint(svc Service) endpoint.Endpoint {
 	return func(ctx context.Context, rawRequest interface{}) (interface{}, error) {
 		request := rawRequest.(CreateRequest)
-		group, err := svc.Create(request.Group)
+		item, err := svc.Create(request.Item)
 		if err != nil {
 			return CreateResponse{}, err
 		}
 
 		return CreateResponse{
-			Group: group,
+			Item: item,
 		}, nil
 	}
 }
 
 type UpdateRequest struct {
-	Group *Group `json:"group,omitempty"`
+	Item *Item `json:"item,omitempty"`
 }
 type UpdateResponse struct {
-	Group *Group `json:"group,omitempty"`
+	Item *Item `json:"item,omitempty"`
 }
 
 func UpdateEndpoint(svc Service) endpoint.Endpoint {
 	return func(ctx context.Context, rawRequest interface{}) (interface{}, error) {
 		request := rawRequest.(UpdateRequest)
-		Group, err := svc.Update(request.Group)
+		Item, err := svc.Update(request.Item)
 		if err != nil {
 			return UpdateResponse{}, err
 		}
 
 		return UpdateResponse{
-			Group: Group,
+			Item: Item,
 		}, nil
 	}
 }
 
 type GetRequest struct {
-	Group *Group `json:"group,omitempty"`
+	Item *Item `json:"item,omitempty"`
 }
 type GetResponse struct {
-	Group *Group
+	Item *Item
 }
 
 func GetEndpoint(svc Service) endpoint.Endpoint {
 	return func(ctx context.Context, rawRequest interface{}) (interface{}, error) {
 		request := rawRequest.(GetRequest)
-		Group, err := svc.Get(request.Group)
+		Item, err := svc.Get(request.Item)
 		if err != nil {
 			return GetResponse{}, err
 		}
 
 		return GetResponse{
-			Group: Group,
+			Item: Item,
 		}, nil
 	}
 }
 
 type ListRequest struct{}
 type ListResponse struct {
-	Group []Group `json:"group,omitempty"`
+	Item []Item `json:"item,omitempty"`
 }
 
 func ListEndpoint(svc Service) endpoint.Endpoint {
 	return func(ctx context.Context, rawRequest interface{}) (interface{}, error) {
-		Groups, err := svc.List()
+		Items, err := svc.List()
 		if err != nil {
 			return ListResponse{}, err
 		}
 
 		return ListResponse{
-			Group: Groups,
+			Item: Items,
 		}, nil
 	}
 }

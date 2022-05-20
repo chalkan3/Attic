@@ -1,4 +1,4 @@
-package groups
+package items
 
 import (
 	"time"
@@ -7,10 +7,10 @@ import (
 )
 
 type Repository interface {
-	Insert(group *Group) (*Group, error)
-	Update(group *Group) (*Group, error)
-	Get(group *Group) (*Group, error)
-	List() ([]Group, error)
+	Insert(item *Item) (*Item, error)
+	Update(item *Item) (*Item, error)
+	Get(item *Item) (*Item, error)
+	List() ([]Item, error)
 }
 
 type repository struct {
@@ -23,37 +23,37 @@ func NewRepository(gorm *postgresGORM.PostgresGORM) Repository {
 	}
 }
 
-func (repo *repository) Insert(group *Group) (*Group, error) {
-	group.SetCreatedAT(time.Now())
-	if err := repo.gorm.GetGORM().Create(group).Error; err != nil {
+func (repo *repository) Insert(item *Item) (*Item, error) {
+	item.SetCreatedAT(time.Now())
+	if err := repo.gorm.GetGORM().Create(item).Error; err != nil {
 		return nil, err
 	}
 
-	return group, nil
+	return item, nil
 }
 
-func (repo *repository) Update(group *Group) (*Group, error) {
-	group.SetUpdateAT(time.Now())
-	if err := repo.gorm.GetGORM().Save(group).Error; err != nil {
+func (repo *repository) Update(item *Item) (*Item, error) {
+	item.SetUpdateAT(time.Now())
+	if err := repo.gorm.GetGORM().Save(item).Error; err != nil {
 		return nil, err
 	}
 
-	return group, nil
+	return item, nil
 }
 
-func (repo *repository) Get(group *Group) (*Group, error) {
-	if err := repo.gorm.GetGORM().Find(group, []int64{int64(group.GetID())}).Error; err != nil {
+func (repo *repository) Get(item *Item) (*Item, error) {
+	if err := repo.gorm.GetGORM().Find(item, []int64{int64(item.GetID())}).Error; err != nil {
 		return nil, err
 	}
 
-	return group, nil
+	return item, nil
 }
 
-func (repo *repository) List() ([]Group, error) {
-	var group []Group
-	if err := repo.gorm.GetGORM().Preload("users").Find(&group).Error; err != nil {
-		return group, nil
+func (repo *repository) List() ([]Item, error) {
+	var item []Item
+	if err := repo.gorm.GetGORM().Preload("users").Find(&item).Error; err != nil {
+		return item, nil
 	}
 
-	return group, nil
+	return item, nil
 }

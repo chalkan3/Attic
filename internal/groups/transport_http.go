@@ -114,7 +114,7 @@ func encodeResponse(ctx context.Context, w http.ResponseWriter, response interfa
 
 func codeFrom(err error) int {
 	switch err {
-	case ErrUserIDNotExist:
+	case ErrUserIDNotExist, ErrUserDontMatch, ErrPeIDNotExist:
 		return http.StatusBadRequest
 	default:
 		return http.StatusInternalServerError

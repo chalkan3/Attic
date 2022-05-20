@@ -10,8 +10,8 @@ import (
 	"syscall"
 
 	"rodrigues.igor.com/attic/internal/database"
-	"rodrigues.igor.com/attic/internal/groups"
 	grpc_clients "rodrigues.igor.com/attic/internal/grpc"
+	"rodrigues.igor.com/attic/internal/items"
 	nats_cli "rodrigues.igor.com/attic/internal/nats"
 	"rodrigues.igor.com/attic/pb"
 
@@ -22,9 +22,9 @@ import (
 func main() {
 	fs := flag.NewFlagSet("", flag.ExitOnError)
 	var (
-		httpPort    = fs.String("http_port", "9003", "application http port default 9000")
-		grpcPort    = fs.String("grpc_port", "50053", "application grpc port default 50051")
-		serviceName = fs.String("service_name", "group_service", "service name")
+		httpPort    = fs.String("http_port", "9005", "application http port default 9000")
+		grpcPort    = fs.String("grpc_port", "50054", "application grpc port default 50051")
+		serviceName = fs.String("service_name", "item_service", "service name")
 	)
 
 	flag.Usage = fs.Usage
@@ -47,13 +47,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	groups.NewMigrations(gorm).Migrate()
+	items.NewMigrations(gorm).Migrate()
 
 	grpcClients := grpc_clients.NewClientGRPC()
 
-	svc := groups.NewInstrumentingMiddleware(groups.NewMetrics(), groups.NewLogMW(logger, groups.NewService(groups.NewRepository(gorm), grpcClients)))
-	routes := groups.NewHTTPServer(svc, logger)
-	grpcServer := groups.NewGRPCServer(svc, logger)
+	svc := items.NewInstrumentingMiddleware(items.NewMetrics(), items.NewLogMW(logger, items.NewService(items.NewRepository(gorm), grpcClients)))
+	routes := items.NewHTTPServer(svc, logger)
+	grpcServer := items.NewGRPCServer(svc, logger)
 
 	logger.Log(
 		"service name", *serviceName,
@@ -76,7 +76,7 @@ func main() {
 
 	go func() {
 		baseServer := grpc.NewServer()
-		pb.RegisterGroupServer(baseServer, grpcServer)
+		pb.RegisterItemServer(baseServer, grpcServer)
 		baseServer.Serve(grpcListener)
 	}()
 
