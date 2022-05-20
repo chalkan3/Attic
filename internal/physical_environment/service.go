@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	grpc_clients "rodrigues.igor.com/attic/internal/grpc"
 	"rodrigues.igor.com/attic/pb"
 )
 
@@ -16,13 +17,13 @@ type Service interface {
 
 type service struct {
 	repository Repository
-	userGRPC   pb.UsersClient
+	userGRPC   grpc_clients.GRPCClient
 }
 
-func NewService(repository Repository, userGRPC pb.UsersClient) Service {
+func NewService(repository Repository, grpc *grpc_clients.ClientGRPC) Service {
 	return &service{
 		repository: repository,
-		userGRPC:   userGRPC,
+		userGRPC:   grpc.Create(grpc_clients.Users),
 	}
 }
 
@@ -35,7 +36,7 @@ func (s *service) Create(pe *PhysicalEnvironment) (*PhysicalEnvironment, error) 
 		return nil, err
 	}
 
-	if users.GetID() == 0 {
+	if users.(*pb.UserResponse).GetID() == 0 {
 		return nil, ErrUserIDNotExist
 	}
 

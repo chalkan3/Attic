@@ -42,11 +42,12 @@ func (repo *repository) Update(pe *PhysicalEnvironment) (*PhysicalEnvironment, e
 }
 
 func (repo *repository) Get(pe *PhysicalEnvironment) (*PhysicalEnvironment, error) {
-	if err := repo.gorm.GetGORM().Find(pe, []int64{int64(pe.GetID())}).Error; err != nil {
+	var fetch PhysicalEnvironment
+	if err := repo.gorm.GetGORM().Find(&fetch, []int64{int64(pe.GetID())}).Error; err != nil {
 		return nil, err
 	}
 
-	return pe, nil
+	return &fetch, nil
 }
 
 func (repo *repository) List() ([]PhysicalEnvironment, error) {

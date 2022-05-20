@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+package pb;
+
+service Group {
+    rpc Create(GroupCreateRequest) returns (GroupResponse){}
+    rpc Update(GroupUpdateRequest) returns (GroupResponse){}
+    rpc Get(GroupGetRequest) returns (GroupResponse) {}
+    rpc List(GroupListRequest) returns (GroupListResponse) {}
+}
+
+
+message GroupCreateRequest {
+    int32 ID = 1;
+    string Name = 2;
+    int32 UserID = 3;
+    bool Active = 4;
+    int32 PhysicalEnvironmentID = 5;
+
+}
+
+message GroupUpdateRequest {
+    int32 ID = 1;
+    string Name = 2;
+    int32 UserID = 3;
+    bool Active = 4;
+    int32 PhysicalEnvironmentID = 5;
+}
+
+
+message GroupGetRequest {
+    int32 ID = 1;
+}
+
+
+message GroupListRequest {
+
+}
+
+message GroupResponse {
+    int32 ID = 1;
+    string Name = 2;
+    int32 UserID = 3;
+    int32 PhysicalEnvironmentID = 4;
+    bool Active = 5;
+
+}
+message GroupListResponse {
+    repeated GroupResponse GroupResponse = 1;
+}
